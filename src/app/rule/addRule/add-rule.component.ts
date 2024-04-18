@@ -11,6 +11,8 @@ import { Rule, RuleObjet } from '../models/Rule';
 import { MatDialog } from '@angular/material/dialog';
 import { EditObjetComponent } from '../edit-objet/edit-objet.component'; // Importez votre composant edit-objet
 import { EditParameterComponent } from '../edit-parameter/edit-parameter.component';
+import { SharedDataService } from 'C:/Users/dell/Desktop/INSY2S/ApresGit/front/MicroFrontendHost/src/app/auth/SharedDataService'
+import { TokenService } from '../TokenService'
 
 
 
@@ -23,9 +25,10 @@ import { EditParameterComponent } from '../edit-parameter/edit-parameter.compone
 })
 export class AddRuleComponent implements OnInit {
   
+    token: string | null | undefined;
 
   // constructor( private srvParam: ParamService ,private srvRule: RuleService,private router: Router,){}
-  constructor(private srvRule: ServiceService,private router: Router,private dialog: MatDialog){}
+  constructor(private srvRule: ServiceService,private router: Router,private dialog: MatDialog,private sharedDataService: SharedDataService,private tokenService: TokenService){}
      IdObje : any = 0;
    selectedObjectType: string = ''; 
 
@@ -57,7 +60,15 @@ export class AddRuleComponent implements OnInit {
     
   ngOnInit(): void {
 console.log('succes')
-  }
+/* *****service partage ****  // Accédez aux données stockées dans le service partagé et affichez-les dans la console
+console.log('Token d\'accès service partagé: ', this.sharedDataService.getAccessToken()); */
+
+// Récupérer le jeton à partir du service
+this.token = this.tokenService.getToken();
+console.log('réception de Token dans MFE_Rule ',this.tokenService.getToken())
+}
+
+
 
   
   

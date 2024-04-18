@@ -5,14 +5,14 @@ import { HeaderComponent } from './header/header.component';
 import { AddRuleComponent } from './addRule/add-rule.component';
 import { ListRuleComponent } from './list-rule/list-rule.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { RuleRoutingModule } from './rule-routing.module';
 import { ServiceService } from './service.service';
 import { EditObjetComponent } from './edit-objet/edit-objet.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { EditParameterComponent } from './edit-parameter/edit-parameter.component';
-
+import { AuthInterceptor } from './auth.interceptor';
 
 
 
@@ -34,6 +34,8 @@ import { EditParameterComponent } from './edit-parameter/edit-parameter.componen
     RuleRoutingModule,
     MatDialogModule,
     MatDialogModule,
+    
+    
 
 
   ],
@@ -43,6 +45,13 @@ import { EditParameterComponent } from './edit-parameter/edit-parameter.componen
     AddRuleComponent,
     ListRuleComponent
   ],
-  providers:[ServiceService]
+  providers:[ServiceService,
+    // Ajoutez votre intercepteur aux fournisseurs ici
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ]
 })
 export class RuleModule { }

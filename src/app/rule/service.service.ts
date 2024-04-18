@@ -4,15 +4,21 @@ import { RuleObjetDto } from './models/RuleObjet-dto';
 import { ObjectDto } from './models/object-dto';
 import { ParamDto } from './models/param-dto';
 import { RuleDto } from './models/rule-dto';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient ,HttpHeaders } from '@angular/common/http';
 import { Rule } from './models/Rule';
+import { TokenService } from './TokenService';
+
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceService {
 
-  constructor(private http : HttpClient) { }
+
+  constructor(private http : HttpClient) {
+
+   }
   url='http://localhost:7080/api/v1/workflows'
 
 
@@ -47,6 +53,7 @@ export class ServiceService {
 
   //service Rule 
   url1='http://localhost:7080/api/v1'
+  //http://localhost:7081/api/rule/objets
 
   
 
@@ -75,9 +82,15 @@ export class ServiceService {
     return this.http.get(this.url1+'/'+ruleId)
   }
 
+
+
+    //service Objet 
+    urlRS='http://localhost:7081/api/rule'
+ 
+
   //pour l'objet
   addObjet (object:ObjectDto){
-    return this.http.post(this.url1+'/objets',object) 
+    return this.http.post(this.urlRS+'/objets',object) 
    }
 
 /*    addParam (param:ParamDto){
@@ -85,29 +98,28 @@ export class ServiceService {
    } */
 
    addRuleObjet (relation:RuleObjetDto){
-    return this.http.post(this.url1+'/relations',relation) 
+    return this.http.post(this.urlRS+'/relations',relation) 
    }
 
    //Parameter
    addParameter (param:ParamDto){
-    return this.http.post(this.url1+'/parameters',param) 
+    return this.http.post(this.urlRS+'/parameters',param) 
    }
    
    //Add Rule With Objects 
    
    addRuleWithObjects (rule:Rule){
-    return this.http.post(this.url1+'/rules/addWithObjects',rule) 
+    return this.http.post(this.urlRS+'/rules/addWithObjects',rule) 
    }
 
    deleteObjet (ObjetId: any ){
-    return this.http.delete(this.url1+'/objets/'+ObjetId)
+    return this.http.delete(this.urlRS+'/objets/'+ObjetId)
   }
 
   //EDit Object
   editObject(object:ObjectDto , objtId:any ){
-    return this.http.put(this.url1+'/objets/'+objtId,object) 
+    return this.http.put(this.urlRS+'/objets/'+objtId,object) 
    }
 
 
 }
-
