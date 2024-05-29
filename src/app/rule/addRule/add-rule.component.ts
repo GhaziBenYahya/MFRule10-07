@@ -13,6 +13,7 @@ import { EditObjetComponent } from '../edit-objet/edit-objet.component'; // Impo
 import { EditParameterComponent } from '../edit-parameter/edit-parameter.component';
 import { SharedDataService } from 'C:/Users/dell/Desktop/INSY2S/ApresGit/front/MicroFrontendHost/src/app/auth/SharedDataService'
 import { TokenService } from '../TokenService'
+import {IdWorkflowService} from '../IdWorkflowService'
 
 
 
@@ -28,7 +29,7 @@ export class AddRuleComponent implements OnInit {
     token: string | null | undefined;
 
   // constructor( private srvParam: ParamService ,private srvRule: RuleService,private router: Router,){}
-  constructor(private srvRule: ServiceService,private router: Router,private dialog: MatDialog,private sharedDataService: SharedDataService,private tokenService: TokenService){}
+  constructor(private srvRule: ServiceService,private router: Router,private dialog: MatDialog,private sharedDataService: SharedDataService,private tokenService: TokenService,private IdWorkflowService: IdWorkflowService){}
      IdObje : any = 0;
    selectedObjectType: string = ''; 
 
@@ -173,6 +174,7 @@ ruleObjet = new RuleObjet('','')
   '',
   this.ruleObjets
 );
+idRule!:Rule;
 Formule1: string = '';
 //methode test
 addRuleWithObjectstest(): void {
@@ -210,11 +212,36 @@ addRuleWithObjectstest(): void {
   // Enregistrez l'objet dans la base de données
    this.srvRule.addRuleWithObjects(this.rule)
     .subscribe(
-      (result) => { // En cas de succès
+      (result: any) => { // En cas de succès
         console.log(result);
         Swal.fire('Valider', '', 'success');  
-        console.log(result);
-       
+       this.idRule =result;
+        console.log("voila le resultat",this.idRule);
+
+        // envoyer le id de rule
+        const IdRule = this.idRule.id;
+
+        // Stockez le token dans localStorage
+        localStorage.setItem('IdRule', IdRule);
+        console.log('Id Rule  localStorage Rule',localStorage);
+
+
+
+
+        // get IdWorkflow and navigat vers le workflow
+        const IdWorkflow = this.IdWorkflowService.getIdWorkflow(); 
+        console.log('id Workflow localStorage Workflow',IdWorkflow);
+        const IdStep = this.IdWorkflowService.getIdStep(); 
+        console.log('id IdStep localStorage IdStep',IdStep);
+        const RankStep = this.IdWorkflowService.getRankStep(); 
+        console.log('id IdStep localStorage IdStep',RankStep);
+        
+        // pour envoyer le ids 
+        localStorage.setItem('IdStep', IdStep);
+        localStorage.setItem('RankStep', RankStep);
+
+        this.router.navigate(['/mfe1/orderComponent/create-flowComponent/',IdWorkflow]);
+
 
    // Vider le tableau Parametres
   //this.Parametres.splice(0, this.Parametres.length);

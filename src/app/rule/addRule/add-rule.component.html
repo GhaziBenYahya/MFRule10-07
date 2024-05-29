@@ -66,7 +66,7 @@
             <option value="Operateur">Opérateur</option>
             <option value="Const">Constante</option>
             <option value="Var">Variable</option>
-            <option value="Input">Saisir</option>
+            <option value="saisir">Saisir</option>
           </select>
         </div>
        
@@ -173,7 +173,7 @@
           </div>
 
           <!--Input -->
-          <div *ngIf="selectedObjectType === 'Input'">
+          <div *ngIf="selectedObjectType === 'saisir'">
             <select id="content" [(ngModel)]="ObjectDto.content" name="content">
               <option value="" disabled selected>Type d'saisir</option>
               <option value="text">text</option>

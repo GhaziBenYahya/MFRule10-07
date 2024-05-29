@@ -1,4 +1,5 @@
 export class Rule {
+    id:any;
     name: string;
     description: string;
     formula: string;

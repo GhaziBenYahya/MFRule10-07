@@ -1,5 +1,5 @@
 .parametres-table-container {
-  width: 100%;
+  width: 100% auto;
   overflow-x: auto; /* Pour activer le défilement horizontal si nécessaire */
 }
 
@@ -55,22 +55,22 @@
 
 body {
   font-family: 'Arial', sans-serif;
-  height: 100vh;
+  height: 100vh auto;
   background-color: #CDE8ED;
 }
 
 
 .container{
   background-color: white;
-  padding-top: 20px;
-  padding-bottom: 40px;
-  padding-left: 30px;
-  padding-right: 16px;
-  margin-right: 8px;
-  margin-left: 33px;
+  padding-top: auto;
+  padding-bottom:  auto;
+  padding-left:  auto;
+  padding-right:  auto;
+  margin-right:  auto;
+  margin-left:  auto;
   margin-top: 20px;
   border-radius: 20px;
-  width: 73em;
+  width:  auto;
 }
 h2 {
   text-align: center;
