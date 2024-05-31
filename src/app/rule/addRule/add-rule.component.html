@@ -12,7 +12,7 @@
       </div>
       
       <!--Tableau de Object-->
-      <div *ngIf="Objects && Objects.length > 0">
+<div *ngIf="Objects && Objects.length > 0">
 <div class="parametres-table-container">
   <table class="parametres-table">
     <thead>
@@ -50,7 +50,7 @@
 
 
 <!--modification-->
-<div style="margin-top: 10px;"   style="margin-top: 10px;" *ngIf="showFormulaObjectInputs">
+<div style="margin-top: 10px;" *ngIf="showFormulaObjectInputs">
 
   <form action="/submit" method="post" class="adjust">
     <div class="grid-box3">
@@ -66,7 +66,7 @@
             <option value="Operateur">Opérateur</option>
             <option value="Const">Constante</option>
             <option value="Var">Variable</option>
-            <option value="saisir">Saisir</option>
+            <option value="saisir">Saisie</option>
           </select>
         </div>
        
@@ -201,7 +201,7 @@
 
 
   <div>
-    <button class="align" ><a (click)="addRuleWithObjectstest()" >Enregistrer le régle</a></button>
+    <button class="align" ><a (click)="addRuleWithObjectstest()" >Enregistrer la règle</a></button>
     <button class="align"><a>Annuler</a></button>
      <!-- [disabled]="!Rule.ruleName||!Rule.description " -->
 

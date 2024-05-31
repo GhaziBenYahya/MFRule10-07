@@ -11,7 +11,6 @@ import { Rule, RuleObjet } from '../models/Rule';
 import { MatDialog } from '@angular/material/dialog';
 import { EditObjetComponent } from '../edit-objet/edit-objet.component'; // Importez votre composant edit-objet
 import { EditParameterComponent } from '../edit-parameter/edit-parameter.component';
-import { SharedDataService } from 'C:/Users/dell/Desktop/INSY2S/ApresGit/front/MicroFrontendHost/src/app/auth/SharedDataService'
 import { TokenService } from '../TokenService'
 import {IdWorkflowService} from '../IdWorkflowService'
 
@@ -29,7 +28,7 @@ export class AddRuleComponent implements OnInit {
     token: string | null | undefined;
 
   // constructor( private srvParam: ParamService ,private srvRule: RuleService,private router: Router,){}
-  constructor(private srvRule: ServiceService,private router: Router,private dialog: MatDialog,private sharedDataService: SharedDataService,private tokenService: TokenService,private IdWorkflowService: IdWorkflowService){}
+  constructor(private srvRule: ServiceService,private router: Router,private dialog: MatDialog,private tokenService: TokenService,private IdWorkflowService: IdWorkflowService){}
      IdObje : any = 0;
    selectedObjectType: string = ''; 
 
@@ -108,6 +107,7 @@ console.log('réception de Token dans MFE_Rule ',this.tokenService.getToken())
   onAddFormulaObjectClick( ): void {
 
     this.showFormulaObjectInputs = true;
+
   }
   //End
   
@@ -133,7 +133,7 @@ console.log('réception de Token dans MFE_Rule ',this.tokenService.getToken())
       name: this.ObjectDto.name, content: this.ObjectDto.content,
       id:'' ,
       type: this.selectedObjectType,
-      creationDate: undefined
+      creationDate: new Date,
     };
   
     // Enregistrez l'objet dans la base de données
