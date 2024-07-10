@@ -73,14 +73,13 @@ export class ServiceService {
 
 
 
-  editRule(rule:RuleDto , ruleId:any ){
-    return this.http.put(this.url1+'/'+ruleId,rule) 
-   }
+
 
 
    getRuleById(ruleId:any){
     return this.http.get(this.url1+'/'+ruleId)
   }
+
 
 
 
@@ -121,5 +120,16 @@ export class ServiceService {
     return this.http.put(this.urlRS+'/objets/'+objtId,object) 
    }
 
+   getAllRule(){
+    return this.http.get(this.urlRS+'/rules')
+  }
+
+  getAllObject(){
+    return this.http.get(this.urlRS+'/objets')
+  }
+
+  editRule(rule:Rule , ruleId:any ){
+    return this.http.put(this.urlRS+'/rules/'+ruleId,rule) 
+   }
 
 }

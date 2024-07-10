@@ -16,6 +16,7 @@ import {IdWorkflowService} from '../IdWorkflowService'
 
 
 
+
 @Component({
   selector: 'app-add-rule',
   templateUrl: './add-rule.component.html',
@@ -56,7 +57,25 @@ export class AddRuleComponent implements OnInit {
  
 
 
+nameStep:string=''
+rules:Rule[]=[]
+objectsConstante:ObjectDto[]=[];
+objectsSaisir:ObjectDto[]=[];
+objectsVar:ObjectDto[]=[];
 
+
+filteredConstant: ObjectDto[] = [];
+filteredSaisir: ObjectDto[] = [];
+filteredVar: ObjectDto[] = [];
+
+
+searchTermConstant: string = '';
+searchTermSaisir: string = '';
+searchTermVar: string = '';
+
+
+pageIndex = 1;
+pageSize = 4;
     
   ngOnInit(): void {
 console.log('succes')
@@ -66,7 +85,189 @@ console.log('Token d\'accès service partagé: ', this.sharedDataService.getAcce
 // Récupérer le jeton à partir du service
 this.token = this.tokenService.getToken();
 console.log('réception de Token dans MFE_Rule ',this.tokenService.getToken())
+        //get name
+        const NameStep = this.IdWorkflowService.getNameStep(); 
+        console.log('name Step localStorage IdStep',NameStep);
+        this.nameStep=NameStep
+
+
+
+        //get allRule
+        this.firstGet()
+
+
 }
+
+firstGet(){
+  this.srvRule.getAllObject().subscribe((res: any) => {
+
+    console.log(res)
+    this.objectsConstante = res.filter((objet: { type: string; }) => objet.type === 'Const');
+    this.filteredConstant = this.objectsConstante.filter((objet: { status: string; }) => objet.status != 'false');
+
+    this.objectsSaisir = res.filter((objet: { type: string; }) => objet.type === 'saisir');
+    this.filteredSaisir = this.objectsSaisir.filter((objet: { status: string; }) => objet.status != 'false');
+
+    this.objectsVar = res.filter((objet: { type: string; }) => objet.type === 'Var');
+    this.filteredVar = this.objectsVar.filter((objet: { status: string; }) => objet.status != 'false');
+/*           console.log("les filteredVar:",this.filteredVar)*/
+    //console.log("les filteredVar:",this.objectsVar) 
+
+  
+  
+   })
+
+}
+
+filterConstante(): void {
+  this.filteredConstant = this.filteredConstant.filter(objet => 
+    objet.content.toLowerCase().includes(this.searchTermConstant.toLowerCase())
+  );
+}
+filterSaisir(): void {
+  this.filteredSaisir = this.filteredSaisir.filter(objet => 
+    objet.name.toLowerCase().includes(this.searchTermSaisir.toLowerCase())
+  );
+}
+filterVar(): void {
+  this.filteredVar = this.filteredVar.filter(objet => 
+    objet.name.toLowerCase().includes(this.searchTermVar.toLowerCase())
+  );
+}
+
+onPageChange(event: any): void {
+  this.pageIndex = event.pageIndex + 1;
+}
+
+ListConstantView:string='true';
+addConstantView:string='false';
+
+ListSaisirView:string='true';
+addSaisirView:string='false';
+
+ListApiView:string='true';
+addApiView:string='false';
+
+constantView(){
+  this.ListConstantView='false';
+  this.addConstantView='true';
+}
+
+SaisirView(){
+  this.ListSaisirView='false';
+  this.addSaisirView='true';
+}
+
+ApiView(){
+  this.ListApiView='false';
+  this.addApiView='true';
+}
+
+addObjectOfList(obj:ObjectDto): void {
+
+  // Ajoutez la nouvelle instance d'ObjectDto au tableau Objects
+  this.Objects.push(obj);
+  console.log(this.Objects)
+
+
+}
+
+retoureConstante(){
+  this.ListConstantView='true';
+  this.addConstantView='false';
+}
+retoureListAPI(){
+  this.ListApiView='true';
+  this.addApiView='false';
+
+}
+retoureListSaisir(){
+  this.ListSaisirView='true';
+  this.addSaisirView='false';
+
+}
+
+retoureListregle(){
+  this.router.navigate(['/mfe1/orderComponent/MfeRule/ruleComponent/listRuleComponent']);
+}
+
+
+
+deleteObjectUtilise(obj:ObjectDto){
+  // Afficher un message d'alerte de confirmation avant la suppression
+  Swal.fire({
+    title: 'Êtes-vous sûr?',
+    text: 'Cette action est irréversible et supprimera l\'objet.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Oui, supprimer!',
+    cancelButtonText: 'Annuler'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // L'utilisateur a cliqué sur "Oui, supprimer"
+      obj.status = "false"
+      this.srvRule.editObject(obj,obj.id)
+        .subscribe(
+          (result) => { // succès
+            console.log(result);
+            Swal.fire('Objet est supprimée avec succès', '', 'success');
+            //window.location.reload();
+            this.firstGet()
+             
+             
+          },
+          (err) => {
+            // traitement du cas d'erreur//             console.log(err);
+            Swal.fire('Objet est supprimée avec succès aaaaaaaaaaaa', '', 'success');
+            
+           // window.location.reload();
+          }
+        );
+    } else {
+      // L'utilisateur a cliqué sur "Annuler" ou a cliqué en dehors de la boîte de dialogue
+      Swal.fire('Suppression annulée', '', 'info');
+    }
+  });
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -100,6 +301,13 @@ console.log('réception de Token dans MFE_Rule ',this.tokenService.getToken())
     this.selectedObjectType = (event.target as HTMLSelectElement).value;
     console.log(this.selectedObjectType)
     this.showFormulaInputs = false
+    this.ListConstantView='true';
+    this.addConstantView='false';
+    this.ListSaisirView='true';
+    this.addSaisirView='false';
+    this.ListApiView='true';
+    this.addApiView='false';
+    
     
   }
 
@@ -107,6 +315,7 @@ console.log('réception de Token dans MFE_Rule ',this.tokenService.getToken())
   onAddFormulaObjectClick( ): void {
 
     this.showFormulaObjectInputs = true;
+
 
   }
   //End
@@ -128,36 +337,57 @@ console.log('réception de Token dans MFE_Rule ',this.tokenService.getToken())
   Objects: ObjectDto[] = [];
 
   addObject(): void {
-    // Créez une nouvelle instance d'ObjectDto avec les valeurs actuelles de ObjectDto
-    let newObject: ObjectDto = {
-      name: this.ObjectDto.name, content: this.ObjectDto.content,
-      id:'' ,
-      type: this.selectedObjectType,
-      creationDate: new Date,
-    };
+
+
+
+
   
     // Enregistrez l'objet dans la base de données
-    this.ObjectDto.type= this.selectedObjectType;
-    this.srvRule.addObjet(this.ObjectDto)
+    if(this.selectedObjectType != "Var"){
+      this.ObjectDto.type= this.selectedObjectType;
+      this.ObjectDto.name=this.ObjectDto.content
+      console.log("aaaaaaaaa",this.ObjectDto)
+
+          // Créez une nouvelle instance d'ObjectDto avec les valeurs actuelles de ObjectDto
+    let newObject: ObjectDto = {
+      name: this.ObjectDto.name, 
+      content: this.ObjectDto.content,
+      id:'' ,
+      type: this.selectedObjectType,
+      status:'',
+      creationDate: new Date,
+    };
+
+      //Ajouter a la BD
+      this.srvRule.addObjet(this.ObjectDto)
       .subscribe(
         (result) => { // En cas de succès
           console.log(result);
           Swal.fire('Valider', '', 'success');  
           console.log('Data saved');
           newObject.id = result
+
+                          // Ajoutez la nouvelle instance d'ObjectDto au tableau Objects
+                this.Objects.push(newObject);
+                console.log("bbbbbbbbbbb",this.Objects)
+
+              
+                // Réinitialisez ObjectDto pour effacer les champs de saisie
+                this.ObjectDto = { name: '', content: '' ,type:this.selectedObjectType , id:'' ,status:'',creationDate:''};
+
+
         },
         (error) => { // En cas d'erreur
           console.log('Error:', error);
           Swal.fire('Erreur', '', 'error');
         }
       );
+
+    }
+
+    
   
-    // Ajoutez la nouvelle instance d'ObjectDto au tableau Objects
-    this.Objects.push(newObject);
-    console.log(this.Objects)
-  
-    // Réinitialisez ObjectDto pour effacer les champs de saisie
-    this.ObjectDto = { name: '', content: '' ,type:this.selectedObjectType , id:'' ,creationDate:''};
+
   }
   
   //**********************************************End Tableau des objet pour le regle**************************************************************************** */ 
@@ -172,11 +402,17 @@ ruleObjet = new RuleObjet('','')
   '',
   '',
   '',
+  '',
   this.ruleObjets
 );
 idRule!:Rule;
 Formule1: string = '';
 //methode test
+
+
+
+private static pattern: RegExp = /^[a-zA-Z0-9\s]+([+\-*/]\s*[a-zA-Z0-9\s]+)*\s*(<|>|==)\s*[a-zA-Z0-9]+[a-zA-Z0-9\s]+([+\-*/]\s*[a-zA-Z0-9][a-zA-Z0-9\s]+)*$/;
+isValidFormula: boolean = false;
 addRuleWithObjectstest(): void {
   // Liste pour stocker les RuleObjet
   const ruleObjets: RuleObjet[] = [];
@@ -201,6 +437,10 @@ addRuleWithObjectstest(): void {
     }
   });
 
+
+
+
+
   // Afficher la liste de RuleObjet pour vérification
   
   this.Formule1 =Formule
@@ -209,7 +449,14 @@ addRuleWithObjectstest(): void {
   this.rule.ruleObjets = ruleObjets
   console.log('Le Rule :', this.rule);
 
-  // Enregistrez l'objet dans la base de données
+
+    //Test de expression de regle 
+    this.isValidFormula = AddRuleComponent.pattern.test(this.rule.formula);
+    if (this.isValidFormula) {
+      // Logique pour ajouter la règle si la formule est valide
+      console.log('La formule est valide et la règle est ajoutée.',this.rule.formula);
+
+         // Enregistrez l'objet dans la base de données
    this.srvRule.addRuleWithObjects(this.rule)
     .subscribe(
       (result: any) => { // En cas de succès
@@ -235,6 +482,7 @@ addRuleWithObjectstest(): void {
         console.log('id IdStep localStorage IdStep',IdStep);
         const RankStep = this.IdWorkflowService.getRankStep(); 
         console.log('id IdStep localStorage IdStep',RankStep);
+
         
         // pour envoyer le ids 
         localStorage.setItem('IdStep', IdStep);
@@ -251,7 +499,19 @@ addRuleWithObjectstest(): void {
         console.log('Error:', error);
         Swal.fire('Erreur', '', 'error');
       }
-    ); 
+    );  
+
+    } else {
+      // Logique pour gérer les erreurs de validation
+      console.log('La formule est invalide.',this.rule.formula);
+      Swal.fire('La formule est invalide', '', 'error');
+    }
+
+
+
+// fin test 
+
+
 }
 //fin methode test 
 
@@ -259,6 +519,7 @@ addRuleWithObjectstest(): void {
 
 
 //*******************************************************************End Add Rule With Objects ************************************************************************************** */
+
 
 
 
@@ -313,7 +574,8 @@ addRuleWithObjectstest(): void {
       name: this.ObjectDto.name, content: this.ObjectDto.content,
       id: undefined,
       type: this.selectedObjectType,
-      creationDate: undefined
+      creationDate: undefined,
+      status:''
     };
     
     // Enregistrez l'objet dans la base de données
@@ -362,7 +624,7 @@ addRuleWithObjectstest(): void {
     this.Objects.push(newObject);
   
     // Réinitialisez ObjectDto pour effacer les champs de saisie
-    this.ObjectDto = { name: '', content: '' ,type:this.selectedObjectType , id:'' ,creationDate:''};
+    this.ObjectDto = { name: '', content: '' ,type:this.selectedObjectType ,status:'', id:'' ,creationDate:''};
   }
   
 //********************************************************End AddObjectWithParameter****************************************************************** */
@@ -472,7 +734,8 @@ deleteObject(index: number , idObjet: any): void {
            },
            (err) => {
              // traitement du cas d'erreur//             console.log(err);
-             Swal.fire('L objet est supprimée avec succès', '', 'success');
+             Swal.fire('L objet est supprimée avec succès ', '', 'success');
+             this.Objects.splice(index, 1); // Supprimez l'élément à l'index spécifié
             // window.location.reload();
            }
          );

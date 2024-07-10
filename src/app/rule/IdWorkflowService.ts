@@ -17,4 +17,9 @@ export class IdWorkflowService {
     return localStorage.getItem('RankStep');
   }
 
+  getNameStep(): any | null {
+    // Récupérer le jeton à partir du localStorage
+    return localStorage.getItem('NameStep');
+  }
+
 }

@@ -1,45 +1,81 @@
 
+
 <div class="flex justify-center items-center h-screen">
     <div class="container mx-auto">
-      <div class="bg-white p-8 rounded-lg shadow-lg w-200 p-4">
-        <div class="container">
-            <div class="title-container">
-                <h1 class="page-title">Liste des règles</h1>
-            </div>
-            <table>
-            <thead>
-                <tr>
-                <th>Nom du règle</th>
-                <th>Description</th>
-                </tr>
-            </thead>
-            TODO :
-            <tbody>
-                <tr *ngFor="let Rule of RuleDto">
-                <td>{{ Rule.ruleName }}</td>
-                <td>{{ Rule.description }}</td>
-                <td>
-                    <!-- <button class="edit-button"(click)="nav(Rule.ruleId)" >Modifier</button>
-                    <button class="delete-button" (click)="deleteRule(Rule.ruleId)">Supprimer</button> -->
-<!-- TODDO : voir liste des objets -->
-                    <button class="edit-button">Voir</button>
-
-                    <button class="edit-button">appliquer</button>
-
-                    <button class="delete-button">Supprimer</button>
-                </td>
-                </tr>
-            </tbody>
-            </table>
-        
-            <!-- <div class="pagination">
-            <button *ngFor="let page of getPagesArray()" (click)="setPage(page)" [ngClass]="{ 'active': page === currentPage }">
-                {{ page }}
-            </button>
-            </div> -->
-        
-        </div>
-        </div>
-  </div>
+      <div class="bg-white p-8 rounded-lg shadow-lg w-500 p-2">
+        <div class="container" >
+          
   
+      <!-- <h2>Liste des workflow</h2> -->
+      <div class="title-container">
+        <h1 class="page-title">Liste des régles > 
+      </h1>
+      <h5>Ajouter une règle pour l'étape :"{{nameStep}}"</h5>
+      </div>
+
+      <!---------------->
+      <div class="container-addButton">
+        <button class="nav-link" [routerLink]="['/mfe1/orderComponent/MfeRule/ruleComponent/addRuleComponent']" >
+          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#fff" class="bi bi-plus-circle" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+          </svg>
+          Créer une règle 
+          
+        </button>
+       </div>
+      <!---------------->
+
+
+      <div class="user-list">
+  
+        
+      <!-- list-workflow.component.html -->
+      <div class="search-container">
+        <input type="text" [(ngModel)]="searchTerm" (input)="filterWorkflows()" placeholder="Rechercher un régle">
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th class="col-num" style="text-align: center;">#</th>
+            <th class="col-nom">Nom de règle </th>
+            <th class="col-description">Description</th>
+            <th class="col-description">Expression</th>
+
+            <th class="col-actions"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let wkf of filteredRule | slice: (pageIndex - 1) * pageSize : pageIndex * pageSize, let i = index">
+            <td class="col-num">{{ i + 1 }}</td>
+            <td class="col-nom">{{wkf.name}}</td>
+            <td class="col-description">{{wkf.description}}</td>
+            <td class="col-description">{{wkf.formula}}</td>
+  
+            <td class="col-actions">
+  
+              <button class="execute" (click)="Ajouter(wkf.id)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#007bff" class="bi bi-plus-square" viewBox="0 0 16 16">
+                  <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                </svg>
+              </button>
+              <button class="execute" (click)="deleteRule(wkf)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" class="bi bi-x-square" viewBox="0 0 16 16">
+                  <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                </svg>
+            </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <mat-paginator [length]="rules.length" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25, 100]" (page)="onPageChange($event)" [hidePageSize]="true">
+      </mat-paginator>
+      
+
+    </div>
+    </div>
+    </div>
+    </div>
   

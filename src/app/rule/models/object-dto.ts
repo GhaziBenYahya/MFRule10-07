@@ -3,6 +3,7 @@ export class ObjectDto {
   name: string = '';
   type: any;
   content: string = '';
+  status:string = ''
   creationDate: any;
   
 

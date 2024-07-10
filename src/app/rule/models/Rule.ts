@@ -3,6 +3,7 @@ export class Rule {
     name: string;
     description: string;
     formula: string;
+    status: string;
     creationDate: any;
     ruleObjets: RuleObjet[];
   
@@ -10,12 +11,14 @@ export class Rule {
       name: string,
       description: string,
       formula: string,
+      status: string,
       creationDate: any,
       ruleObjets: RuleObjet[]
     ) {
       this.name = name;
       this.description = description;
       this.formula = formula;
+      this.status = status;
       this.creationDate = creationDate;
       this.ruleObjets = ruleObjets;
     }

@@ -1,107 +1,181 @@
-.container{
-    background-color: white;
-      padding-top: 20px;
-      padding-bottom: 40px;
-      padding-left: 30px;
-      padding-right: 10px;
-      margin-right: 100em;
-      margin-left: 120px;
-      margin-top: 20px;
-      border-radius: 20px;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  
-  
-  th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-  }
-  
-  th {
-    background-color: #f2f2f2;
-  }
-  
-  .in-progress {
-    font-weight: bold;
-    color: #66E199; 
-  }
-  
-  .pending {
-    font-weight: bold;
-    color: #EE760F; 
-  }
-  
-  .completed {
-    font-weight: bold;
-    color: #5271FF; 
-  }
-  
-  button {
-    padding: 10px;
-    
-    color: black;
-    border: none;
-    border-radius: 70px;
-    padding-left: 20px;
-    cursor: pointer;
-    margin-left: 20px;
-    margin-right: 20px;
-    font-size: small;
-    padding-right: 20px;
-    font-weight: bold;
-  }
-  
-  
-  .view-button {
-    background-color: #4caf50; 
-    color: white;
-  }
-  
-  .edit-button {
-    background-color: #4caf50; 
-    color: white;
-  }
-  
-  .delete-button {
-    background-color: #f44336; 
-    color: white;
-  }
-  
-  .pagination {
-    margin-top: 20px;
-  }
-  
-  .pagination button {
-    
-    color: #0D47A1;
-    padding: 8px 16px;
-    border: 1px solid #0D47A1; 
-    cursor: pointer;
-    margin: 0 4px;
-  }
-  
-  .pagination button.active {
-    color: white;
-    background-color: #0D47A1; 
-  }
-  
-  .pagination button:hover {
-    background-color: white; 
-    color: #0D47A1;
-  }
+/*CSS pour tableau*/
+.container-addButton{
+  display: flex;
+  justify-content: right;
+  width: 100%;
+}
+
+h5 {
+  text-align: center;
+  color: #000000;
+  margin: 0px;
+}
+.user-list {
+  margin: 20px;
+}
+
+.user-list h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.user-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.user-list th, .user-list td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  border-left: none;
+  border-right: none;
+}
+
+.user-list th {
+  text-align: left;
+
+}
+
+.user-list button {
+  background-color: transparent;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+/* .user-list button:hover {
+  background-color: #45a049;
+} */
+.user-list button.delete {
+  background-color: #f44336; /* Rouge */
+}
+
+.user-list button.delete:hover {
+  background-color: #d32f2f; /* Rouge foncé au survol */
+}
+
+.user-list button.roler {
+  background-color: transparent; /* Rouge */
+}
+
+/* .user-list button.roler:hover {
+  background-color: #2d7af6; 
+} */
+
+.user-list button.role {
+  background-color: #f6a62d; /* Rouge */
+}
+
+.user-list button.role:hover {
+  background-color: #f6a62d; /* Rouge foncé au survol */
+}
+
+.title-container {
+  text-align: center;
+  margin-bottom: 20px; 
+}
+
+.page-title {
+  color: black;
+  font-size: 15px;
+  text-align: left;
+  margin-bottom: 44px;
+
+}
+
+span{
+  font-weight: bold;
+}
+
+.execute{
+  background-color: none;
+}
+
+.col-nom {
+width: 15%;
+}
+
+.col-description {
+width: 40%;
+}
 
 
-  .title-container {
-    text-align: center;
-    margin-bottom: 20px; /* Adjust the margin as needed */
-  }
-  
-  .page-title {
-    color: #333; /* Adjust the color as needed */
-  }
-  
+.col-actions {
+width: 10%;
+text-align: right; /* Optionnel: pour centrer les boutons */
+}
+
+.col-num {
+width: 5%;
+text-align: center;
+}
+
+
+table {
+width: 100%;
+}
+
+
+
+
+
+/* list-workflow.component.css */
+
+.search-container {
+display: flex;
+justify-content: center;
+margin-bottom: 20px;
+}
+
+.search-container input {
+width: 100%;
+max-width: 100%;
+padding: 10px 15px;
+border: 1px solid #ccc;
+border-radius: 4px;
+font-size: 16px;
+transition: border-color 0.3s;
+margin-top: 10px;
+}
+
+.search-container input:focus {
+border-color: #007bff;
+outline: none;
+box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+
+
+
+/************end list************/
+/* Button */
+.container-addButton {
+  display: flex;
+  justify-content: flex-end; /* Positionne le contenu à l'extrême droite */
+  margin-right: 20px; /* Ajuste la marge selon vos besoins */
+}
+
+.nav-link {
+  background-color: #007bff; /* Couleur de fond du bouton */
+  border: none; /* Supprime les bordures */
+  color: white; /* Couleur du texte */
+  padding: 10px 20px; /* Ajuste le rembourrage interne */
+  text-align: center; /* Centre le texte à l'intérieur du bouton */
+  text-decoration: none; /* Supprime les soulignements */
+  display: inline-block; /* Affiche l'élément en ligne */
+  font-size: 16px; /* Ajuste la taille de la police */
+  margin: 4px 2px; /* Ajuste la marge externe */
+  cursor: pointer; /* Change le curseur en pointeur */
+  border-radius: 4px; /* Arrondit les coins */
+}
+
+.nav-link:hover {
+  background-color: #0056b3; /* Change la couleur de fond au survol */
+}
+
+.nav-link svg {
+  margin-right: 5px; /* Ajoute un espace entre l'icône et le texte */
+}

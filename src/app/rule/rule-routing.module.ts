@@ -9,7 +9,7 @@ import { ListRuleComponent } from './list-rule/list-rule.component';
 const ruleRoutes: Routes = [
 
 
-  { path: '', redirectTo: 'ruleComponent/addRuleComponent', pathMatch: 'full' },
+  { path: '', redirectTo: 'ruleComponent/listRuleComponent', pathMatch: 'full' },
 
     {
         path: 'ruleComponent',

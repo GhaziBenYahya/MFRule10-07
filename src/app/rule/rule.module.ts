@@ -13,6 +13,8 @@ import { EditObjetComponent } from './edit-objet/edit-objet.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { EditParameterComponent } from './edit-parameter/edit-parameter.component';
 import { AuthInterceptor } from './auth.interceptor';
+import { MatPaginatorModule } from '@angular/material/paginator';
+
 
 
 
@@ -34,6 +36,7 @@ import { AuthInterceptor } from './auth.interceptor';
     RuleRoutingModule,
     MatDialogModule,
     MatDialogModule,
+    MatPaginatorModule
     
     
 

@@ -1,7 +1,14 @@
+
+<!------------------------------------------------------->
 <div class="flex justify-center items-center h-screen">
+
   <div class="container mx-auto">
+    
     <div class="bg-white p-8 rounded-lg shadow-lg w-200 p-4">
-      <div class="header text-xl mb-4">Ajouter une règle</div>
+      <h1 class="page-title"> <span (click)="retoureListregle()">Liste des régles > </span>Ajouter une règle
+      </h1>
+      <div class="header text-xl mb-4">Ajouter une règle pour l'étape :"{{nameStep}}"</div>
+      
       <div class="box1">
       <input type="text" id="name" name="name" [(ngModel)]="rule.name" required placeholder="Nom de règle" class="mb-4">
       <input type="text" id="descrip"  name="description" [(ngModel)]="rule.description" required placeholder="Description de règle" class="mb-4">
@@ -9,10 +16,12 @@
       <div class="formule-container">
         <!-- Utilisez la balise <span> pour la formule -->
         <span class="formule">{{ Formule1 }}</span>
+        
       </div>
       
       <!--Tableau de Object-->
 <div *ngIf="Objects && Objects.length > 0">
+  <h5>Liste des objets de la règle</h5>
 <div class="parametres-table-container">
   <table class="parametres-table">
     <thead>
@@ -33,7 +42,8 @@
         <td>{{ obj.content }}</td>
         <td>{{ obj.type }}</td>
         <td>
-          <button class="edit-button" (click)="openEditObjetDialog(obj)">Edit</button>
+          <button class="edit-button" (click)="openEditObjetDialog(obj)">
+            Edit</button>
           <button class="delete-button" (click)="deleteObject(i,obj.id)">Supprimer</button>
         </td>
       </tr>
@@ -65,78 +75,337 @@
 
             <option value="Operateur">Opérateur</option>
             <option value="Const">Constante</option>
-            <option value="Var">Variable</option>
+            <option value="Var">API</option>
             <option value="saisir">Saisie</option>
           </select>
         </div>
        
-          
+          <!---Constante-->
       <div *ngIf="selectedObjectType ==='Const'">
-        <div>
-          <input type="text" id="name" name="name" [(ngModel)]="ObjectDto.name" required placeholder="Nom d'objet">
-        </div>
 
-        <div>
-          <input type="text" id="content" name="content" [(ngModel)]="ObjectDto.content" required placeholder="Contenu">
+        <!------List Of Constante------->
+        <div *ngIf="ListConstantView ==='true'">
+          <div class="flex justify-center items-center h-screen">
+            <div class="container mx-auto">
+              <div class="bg-white p-8 rounded-lg shadow-lg w-500 p-2">
+                <div class="container" >
+                  <h1 class="page-title">Liste des Constantes > </h1>
+
+                  
+          
+              
+              <div class="title-container">
+              
+              
+              </div>
+        
+              <!---------------->
+              <div class="container-addButton">
+                <button class="nav-link" (click)="constantView()" >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#fff" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                  </svg>
+                  Créer un constante 
+                  
+                </button>
+               </div>
+              <!---------------->
+        
+        
+              <div class="user-list">
+          
+                
+              <!-- list-workflow.component.html -->
+              <div class="search-container">
+                <input type="text" [(ngModel)]="searchTermConstant" (input)="filterConstante()" placeholder="Rechercher un constante">
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th class="col-num" style="text-align: center;">#</th>
+                    <th class="col-tt">Contenu de constante </th>
+                    
+                    <th class="col-actions"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let wkf of filteredConstant | slice: (pageIndex - 1) * pageSize : pageIndex * pageSize, let i = index">
+                    <td class="col-num">{{ i + 1 }}</td>
+                    <td class="col-tt">{{wkf.content}}</td>
+                    
+          
+                    <td class="col-actions">
+          
+                      <button class="execute" (click)="addObjectOfList(wkf)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#007bff" class="bi bi-plus-square" viewBox="0 0 16 16">
+                          <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                          <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                        </svg>
+                      </button>
+                      <button class="execute" (click)="deleteObjectUtilise(wkf)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" class="bi bi-x-square" viewBox="0 0 16 16">
+                          <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                          <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                        </svg>
+                    </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <mat-paginator [length]="filteredConstant.length" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25, 100]" (page)="onPageChange($event)" [hidePageSize]="true">
+              </mat-paginator>
+              
+        
+            </div>
+            </div>
+            </div>
+            </div>
+
+         </div>
         </div>
-        <div class="button-container">
-          <button class="addObject" (click)="addObject()"  [disabled]="!ObjectDto.name || !ObjectDto.content ">Ajouter </button>
+        
+
+        <!------End List Of Constante--->
+
+
+
+        <!-----------Ajoute un Constante -->
+
+        <div class="flex justify-center items-center h-screen">
+          <div class="container mx-auto">
+            <div class="bg-white p-8 rounded-lg shadow-lg w-500 p-2">
+
+        <div class="container" *ngIf="addConstantView ==='true'">
+          <h1 class="page-title"><span (click)="retoureConstante()">Liste des Constantes ></span>Ajoute un Constante </h1>
+          
+            <div>
+              <input type="text" id="content" name="content" [(ngModel)]="ObjectDto.content" required placeholder="Contenu">
+            </div>
+            <div class="button-container">
+              <button class="addObject" (click)="addObject()"  [disabled]="!ObjectDto.content ">Ajouter </button>
+            </div>
+
+         </div>
+      </div>
+          </div>
         </div>
       </div>
-          
+    
+        <!-----------End Ajoute un Constante -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <!---API-->
         <div *ngIf="selectedObjectType ==='Var'">
-          <div>
-            <input type="text" id="name" name="name" [(ngModel)]="ObjectDto.name" required placeholder="Nom d'objet">
-          </div>
 
-          <div>
-            <input type="text" id="content" name="content" [(ngModel)]="ObjectDto.content" required placeholder="URl de variable">
+          <!-----------List Api------------->
+          <div *ngIf="ListApiView ==='true'">
 
-           </div>
-           <div *ngIf="Parametres && Parametres.length > 0">
-
-                          <!--Tableau de Parameter-->
-                          <div class="parametres-table-container">
-                            <table class="parametres-table">
-                              <thead>
-                                <tr>
-                                  <th>Order</th>
-                                  <th>Name</th>
-                                  <th>Contenu</th>
-                                  <th>Actions</th> <!-- Nouvelle colonne pour les actions -->
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr *ngFor="let obj of Parametres; let i = index">
-                                  <td>{{ obj.rank }}</td> <!-- Affichage de l'index + 1 comme ordre -->
-                                  <td>{{ obj.name }}</td>
-                                  <td>{{ obj.content }}</td>
-                                  <td>
-                                    <button class="edit-button" (click)="openEditParametreDialog(obj)" >Modifier</button>
-                                    <button class="delete-button" (click)="deleteParametre(i)">Supprimer</button>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                          <div class="button-container1">
+            <div class="flex justify-center items-center h-screen">
+              <div class="container mx-auto">
+                <div class="bg-white p-8 rounded-lg shadow-lg w-500 p-2">
+                  <div class="container" >
+                    <h1 class="page-title">Liste des APIs > </h1>
+                    
             
-                            <button class="addFormula" (click)="onAddFormulaClick()">Ajouter des paramétres</button>
-               
-                          </div>
+                
+                <div class="title-container">
+                
+                
+                </div>
+          
+                <!---------------->
+                <div class="container-addButton">
+                  <button class="nav-link" (click)="ApiView()" >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#fff" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                    </svg>
+                    Créer un API 
+                    
+                  </button>
+                 </div>
+                <!---------------->
+          
+          
+                <div class="user-list">
+            
+                  
+                <!-- list-workflow.component.html -->
+                <div class="search-container">
+                  <input type="text" [(ngModel)]="searchTermVar" (input)="filterVar()" placeholder="Rechercher un API">
+                </div>
+                <table>
+                  <thead>
+                    <tr>
+                      <th class="col-num" style="text-align: center;">#</th>
+                      <th class="col-tt">Name </th>
+                      <th class="col-tt">Contenu </th>
+                      
+                      <th class="col-actions"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let wkf of filteredVar | slice: (pageIndex - 1) * pageSize : pageIndex * pageSize, let i = index">
+                      <td class="col-num">{{ i + 1 }}</td>
+                      <td class="col-tt">{{wkf.name}}</td>
+                      <td class="col-tt">{{wkf.content}}</td> 
+                      
+            
+                      <td class="col-actions">
+            
+                        <button class="execute" (click)="addObjectOfList(wkf)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#007bff" class="bi bi-plus-square" viewBox="0 0 16 16">
+                              <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                              <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                            </svg>
+                        </button>
 
-           <!--fin de tableau parametre-->
-          <!--<div><button class="addFormula" (click)="AddObjet()">Enregistrer l'objet</button></div> -->
-          <div class="button-container">
-            <button class="addObject" (click)="addObjectWithParameter()"  [disabled]="!ObjectDto.name || !ObjectDto.content ">Ajouter </button>
+                        <button class="execute" (click)="deleteObjectUtilise(wkf)">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" class="bi bi-x-square" viewBox="0 0 16 16">
+                            <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                          </svg>
+                      </button>
+
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <mat-paginator [length]="filteredVar.length" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25, 100]" (page)="onPageChange($event)" [hidePageSize]="true">
+                </mat-paginator>
+                
+          
+              </div>
+              </div>
+              </div>
+              </div>
+  
+           </div>
+
+
           </div>
+
+          <!-----------End List Api------------->
+
+
+
+
+
+
+
+
+
+
+
+
+                <!------------Add Api---------------->
+                <div class="flex justify-center items-center h-screen">
+                  <div class="container mx-auto">
+                    <div class="bg-white p-8 rounded-lg shadow-lg w-500 p-2">
+                <div class="container"  *ngIf="addApiView ==='true'">
+                  <h1 class="page-title"><span (click)="retoureListAPI()">Liste des APIs ></span>Ajoute un API </h1>
+
+                  <div>
+                    <input type="text" id="name" name="name" [(ngModel)]="ObjectDto.name" required placeholder="Nom d'objet">
+                  </div>
+        
+                  <div>
+                    <input type="text" id="content" name="content" [(ngModel)]="ObjectDto.content" required placeholder=" API">
+        
+                   </div>
+
+
+        
+                   <div *ngIf="Parametres && Parametres.length > 0">
+        
+                                  <!--Tableau de Parameter-->
+                                  <div class="parametres-table-container">
+                                    <table class="parametres-table">
+                                      <thead>
+                                        <tr>
+                                          <th>Order</th>
+                                          <th>Name</th>
+                                          <th>Contenu</th>
+                                          <th>Actions</th> <!-- Nouvelle colonne pour les actions -->
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr *ngFor="let obj of Parametres; let i = index">
+                                          <td>{{ obj.rank }}</td> <!-- Affichage de l'index + 1 comme ordre -->
+                                          <td>{{ obj.name }}</td>
+                                          <td>{{ obj.content }}</td>
+                                          <td>
+                                            <button class="edit-button" (click)="openEditParametreDialog(obj)" >Modifier</button>
+                                            <button class="delete-button" (click)="deleteParametre(i)">Supprimer</button>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                   </div>
+                                  <div class="button-container1">
+                    
+                                    <button class="addFormula" (click)="onAddFormulaClick()">Ajouter des paramétres</button>
+                       
+                                  </div>
+        
+                   <!--fin de tableau parametre-->
+                  <!--<div><button class="addFormula" (click)="AddObjet()">Enregistrer l'objet</button></div> -->
+                  <div class="button-container">
+                    <button class="addObject" (click)="addObjectWithParameter()"  [disabled]="!ObjectDto.name || !ObjectDto.content ">Ajouter </button>
+                  </div>
+
+                    
+
+                </div>
+              </div>
+            </div>
+            </div>
+                <!---------------End Add aPI-->
+
 
 
         </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           
 
-
+          <!---API Parametre-->
           <!-- TODO : nom, contenue, ordre -->
           <div *ngIf="showFormulaInputs">
             <div style="margin-top: 10px;" class="box3">
@@ -158,12 +427,30 @@
           </div>
 
 
-          <div *ngIf="selectedObjectType === 'Operateur'">
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <!---Operateur-->
+          <div class="container" *ngIf="selectedObjectType === 'Operateur'">
             <select id="content" [(ngModel)]="ObjectDto.content" name="content">
               <option value="" disabled selected>Type d'Operateur</option>
               <option value=">">></option>
               <option value="<"><</option>
+              <option value="==">=</option>
               <option value="+">+</option>
+              <option value="*">*</option>
+              <option value="-">-</option>
+              <option value="/">/</option>
             </select>
 
             <div class="button-container">
@@ -172,24 +459,136 @@
 
           </div>
 
-          <!--Input -->
+
+
+
+
+          <!--saisir -->
           <div *ngIf="selectedObjectType === 'saisir'">
-            <select id="content" [(ngModel)]="ObjectDto.content" name="content">
-              <option value="" disabled selected>Type d'saisir</option>
-              <option value="text">text</option>
-              <option value="number">number</option>
-              <option value="Date">Date</option>
-              
-            </select>
-            <div>
-              <input type="text" id="name" name="name" [(ngModel)]="ObjectDto.name" required placeholder="Nom ">
-            </div>
 
-            <div class="button-container">
-              <button class="addObject" (click)="addObject()" [disabled]="!ObjectDto.content ">Ajouter </button>
-            </div>
+                      <!------List Of Saisir------->
+                      <div *ngIf="ListSaisirView ==='true'">
+                        <div class="flex justify-center items-center h-screen">
+                          <div class="container mx-auto">
+                            <div class="bg-white p-8 rounded-lg shadow-lg w-500 p-2">
+                              <div class="container" >
+                                
+                        
+                            
+                            <div class="title-container">
+                            
+                            
+                            </div>
+                            <h1 class="page-title">Liste des Saisir > </h1>
+                      
+                            <!---------------->
+                            <div class="container-addButton">
+                              <button class="nav-link" (click)="SaisirView()" >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#fff" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                </svg>
+                                Créer un objet saisir 
+                                
+                              </button>
+                            </div>
+                            <!---------------->
+                      
+                      
+                            <div class="user-list">
+                        
+                              
+                            <!-- list-workflow.component.html -->
+                            <div class="search-container">
+                              <input type="text" [(ngModel)]="searchTermSaisir" (input)="filterSaisir()" placeholder="Rechercher un objet de type saisir">
+                            </div>
+                            <table>
+                              <thead>
+                                <tr>
+                                  <th class="col-num" style="text-align: center;">#</th>
+                                  <th class="col-tt">Titre </th>
+                                  
+                                  <th class="col-actions"></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let wkf of filteredSaisir | slice: (pageIndex - 1) * pageSize : pageIndex * pageSize, let i = index">
+                                  <td class="col-num">{{ i + 1 }}</td>
+                                  <td class="col-tt">{{wkf.name}}</td>
+                                  
+                        
+                                  <td class="col-actions">
+                        
+                                    <button class="execute" (click)="addObjectOfList(wkf)">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#007bff" class="bi bi-plus-square" viewBox="0 0 16 16">
+                                        <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                      </svg>
+                                    </button>
+                                    <button class="execute" (click)="deleteObjectUtilise(wkf)">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" class="bi bi-x-square" viewBox="0 0 16 16">
+                                        <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                                      </svg>
+                                  </button>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <mat-paginator [length]="filteredSaisir.length" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25, 100]" (page)="onPageChange($event)" [hidePageSize]="true">
+                            </mat-paginator>
+                            
+                      
+                          </div>
+                          </div>
+                          </div>
+                          </div>
 
+                      </div>
+                      </div>
+                      <!------End List Of Saisir--->
+
+
+
+
+
+
+
+
+
+
+
+              <!----------Add new Saisir------------>
+              <div class="flex justify-center items-center h-screen">
+                <div class="container mx-auto">
+                  <div class="bg-white p-8 rounded-lg shadow-lg w-500 p-2">
+              <div class="container" *ngIf="addSaisirView ==='true'">
+<!--                   <select id="content" [(ngModel)]="ObjectDto.content" name="content">
+                    <option value="" disabled selected>Type d'saisir</option>
+                    <option value="text">text</option>
+                    <option value="number">number</option>
+                    <option value="Date">Date</option>
+                    
+                  </select> -->
+                  <h1 class="page-title"><span (click)="retoureListSaisir()">Liste des Saisir ></span>Ajoute un saisir </h1>
+
+                  <div>
+                    <input type="text" id="name" name="name" [(ngModel)]="ObjectDto.content" required placeholder="Nom ">
+                  </div>
+      
+                  <div class="button-container">
+                    <button class="addObject" (click)="addObject()" >Ajouter </button>
+                  </div>
+                </div>
+            
           </div>
+        </div>
+      </div>
+      </div>
+              <!----------Add new Saisir------------>
+
+         <!--End saisir -->
+
         
       
         
